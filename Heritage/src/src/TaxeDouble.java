@@ -26,7 +26,7 @@ package src;
 public class TaxeDouble  extends  Bien{
 
     private final double TVQ = 9.975/100;
-    private final double TPS = 5/100;
+    private final double TPS = 5.0/100;
 
     public TaxeDouble(){}
 
