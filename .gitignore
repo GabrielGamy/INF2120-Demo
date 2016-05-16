@@ -1,1 +1,4 @@
 *.pdf
+*.txt
+/TypeGenerique/nbproject/private/
+/TypeGenerique/build/
