@@ -2,3 +2,5 @@
 *.txt
 /TypeGenerique/nbproject/private/
 /TypeGenerique/build/
+/FileGenerique/nbproject/private/
+/FileGenerique/build/
