@@ -85,7 +85,7 @@ public class Pdemo extends JFrame implements ActionListener{
     public Pdemo(){
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         setLayout( new BorderLayout() );
-        setSize( Graphic.TAILLE_X + BORDURE_X, 2 * Graphic.TAILLE_Y + BORDURE_Y );
+        setSize( Graphic.TAILLE_X + BORDURE_X, 3 * Graphic.TAILLE_Y + BORDURE_Y );
         
         contenu = getContentPane();
         
@@ -217,6 +217,18 @@ public class Pdemo extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == btnJouerNote){
+            // Obtenir ici les valeurs de tous les champs de la fenetre
+
+            // Recuperer le choix d'utilisation des deux ondes
+            utilise2Ondes = choixUtiliseDeuxOndes.isSelected();
+            
+            // Recuperer le choix d'utilisation du filtre
+            utiliseFiltre = choixUtiliseFiltre.isSelected();
+            
+            /** 
+             * Le reste c'est a vous le completer 
+             */
+            
             // les 4 commandes a faire lorsque le boutton est appuye :
             Onde onde = construireOnde();
             dessin.setFonction( onde );
@@ -228,7 +240,7 @@ public class Pdemo extends JFrame implements ActionListener{
         }else if(e.getActionCommand().equals("Pulse Generique")){
             // activer le champs de saisie du ratio
             saisieOndeRatio.setEditable(true);
-        }   
+        }
         // rendre visible les changements sur la fenetre
         this.setVisible(true);
     }       
