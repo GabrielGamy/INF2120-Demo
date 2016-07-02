@@ -64,6 +64,8 @@ public class Pdemo extends JFrame implements ActionListener{
     
     JButton btnJouerNote;
     JMenuBar barreMenuOnde;
+    JTextField saisieOndeRatio;
+    JLabel titreChamps;
     
     Container contenu; 
     JPanel panneau_de_composants; 
@@ -95,6 +97,15 @@ public class Pdemo extends JFrame implements ActionListener{
         
         // Afficher la barre de menu qui permet de choisir notre onde
         afficherMenu();
+
+        // Ajouter un label
+        titreChamps = new JLabel("Entrez le ratio");
+        panneau_de_composants.add(titreChamps);
+        
+        // Ajouter le champs de saisie du ratio
+        saisieOndeRatio = new JTextField();
+        saisieOndeRatio.setColumns(4); // taille du champs de texte
+        panneau_de_composants.add(saisieOndeRatio);   
         
         setVisible(true);
        
@@ -133,7 +144,15 @@ public class Pdemo extends JFrame implements ActionListener{
             dessin.setFonction( onde );
             dessin.repaint();
             jouerNote( onde ); 
-        }
+        }else if(e.getActionCommand().equals("Sinusoidale")){
+            // desactiver le champs de saisie du ratio
+            saisieOndeRatio.setEditable(false);
+        }else if(e.getActionCommand().equals("Pulse Generique")){
+            // activer le champs de saisie du ratio
+            saisieOndeRatio.setEditable(true);
+        }   
+        // rendre visible les changements sur la fenetre
+        this.setVisible(true);
     }       
     
     
