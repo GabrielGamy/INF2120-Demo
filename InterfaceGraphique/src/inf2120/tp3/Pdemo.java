@@ -1,6 +1,7 @@
 package inf2120.tp3;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
@@ -73,6 +74,10 @@ public class Pdemo extends JFrame implements ActionListener{
     JSlider choixDuree;
     JTextField saisieFrequence;
     JCheckBox choixUtiliseFiltre;
+    JTextField saisieADSR_A;
+    JTextField saisieADSR_D;
+    JTextField saisieADSR_S;
+    JTextField saisieADSR_R;
     
     Container contenu; 
     JPanel panneau_de_composants; 
@@ -86,19 +91,12 @@ public class Pdemo extends JFrame implements ActionListener{
         
         // Ajouter un panneau sur la fenetre
         panneau_de_composants = new JPanel();
-        // 3 lignes, 4 colonnes , intervalle horizontal de 15, intervalle vertical de 10
-        panneau_de_composants.setLayout(new GridLayout(3, 4, 15, 10)); 
-        
+        // 4 lignes, 4 colonnes , intervalle horizontal de 15, intervalle vertical de 10
+        panneau_de_composants.setLayout(new GridLayout(5, 4, 15, 10)); 
+        panneau_de_composants.setBackground(Color.LIGHT_GRAY);
         // Dessiner le graphic qui represente l'onde sur la fenetre
         dessin = new Graphic();
         contenu.add( dessin, BorderLayout.CENTER );
-
-        // Ajouter l'ecouteur sur le bouton qui joue la note 
-        btnJouerNote = new JButton("Jouer le son");
-        btnJouerNote.addActionListener(this);
-        
-        // Ajouter le bouton au panneau
-        panneau_de_composants.add(btnJouerNote);
         
         // Ajouter le panneau sur la fenetre
         contenu.add(panneau_de_composants, BorderLayout.SOUTH);
@@ -147,6 +145,45 @@ public class Pdemo extends JFrame implements ActionListener{
         // Ajouter le checkbox qui permet de determiner si l'on utilise le filtre
         choixUtiliseFiltre = new JCheckBox("Utilise le filtre");
         panneau_de_composants.add(choixUtiliseFiltre);
+    
+        // Ajouter un label
+        titreChamps = new JLabel("ADSR (A):");
+        panneau_de_composants.add(titreChamps);
+        
+        // Ajouter le champs de saisie de la frequence
+        saisieADSR_A = new JTextField();
+        panneau_de_composants.add(saisieADSR_A); 
+
+        // Ajouter un label
+        titreChamps = new JLabel("ADSR (D):");
+        panneau_de_composants.add(titreChamps);
+        
+        // Ajouter le champs de saisie de la frequence
+        saisieADSR_D = new JTextField();
+        panneau_de_composants.add(saisieADSR_D);
+
+        // Ajouter un label
+        titreChamps = new JLabel("ADSR (S):");
+        panneau_de_composants.add(titreChamps);
+        
+        // Ajouter le champs de saisie de la frequence
+        saisieADSR_S = new JTextField();
+        panneau_de_composants.add(saisieADSR_S);
+
+        // Ajouter un label
+        titreChamps = new JLabel("ADSR (R):");
+        panneau_de_composants.add(titreChamps);
+        
+        // Ajouter le champs de saisie de la frequence
+        saisieADSR_R = new JTextField();
+        panneau_de_composants.add(saisieADSR_R);
+
+        // Ajouter l'ecouteur sur le bouton qui joue la note 
+        btnJouerNote = new JButton("Jouer le son");
+        btnJouerNote.addActionListener(this);
+        
+        // Ajouter le bouton au panneau
+        panneau_de_composants.add(btnJouerNote);
         
         setVisible(true);
        
