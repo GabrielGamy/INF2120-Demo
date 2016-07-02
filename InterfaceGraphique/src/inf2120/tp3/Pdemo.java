@@ -72,6 +72,7 @@ public class Pdemo extends JFrame implements ActionListener{
     JSlider choixRatioVolume;
     JSlider choixDuree;
     JTextField saisieFrequence;
+    JCheckBox choixUtiliseFiltre;
     
     Container contenu; 
     JPanel panneau_de_composants; 
@@ -142,6 +143,10 @@ public class Pdemo extends JFrame implements ActionListener{
         saisieFrequence = new JTextField();
         saisieFrequence.setColumns(2); // taille du champs de texte
         panneau_de_composants.add(saisieFrequence); 
+
+        // Ajouter le checkbox qui permet de determiner si l'on utilise le filtre
+        choixUtiliseFiltre = new JCheckBox("Utilise le filtre");
+        panneau_de_composants.add(choixUtiliseFiltre);
         
         setVisible(true);
        
