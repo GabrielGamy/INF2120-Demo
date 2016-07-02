@@ -66,6 +66,7 @@ public class Pdemo extends JFrame implements ActionListener{
     JMenuBar barreMenuOnde;
     JTextField saisieOndeRatio;
     JLabel titreChamps;
+    JCheckBox choixUtiliseDeuxOndes;
     
     Container contenu; 
     JPanel panneau_de_composants; 
@@ -106,6 +107,10 @@ public class Pdemo extends JFrame implements ActionListener{
         saisieOndeRatio = new JTextField();
         saisieOndeRatio.setColumns(4); // taille du champs de texte
         panneau_de_composants.add(saisieOndeRatio);   
+              
+        // Ajouter le checkbox qui permet de determiner si l'on utilise des deux ondes
+        choixUtiliseDeuxOndes = new JCheckBox("Utilise les deux ondes");
+        panneau_de_composants.add(choixUtiliseDeuxOndes);
         
         setVisible(true);
        
