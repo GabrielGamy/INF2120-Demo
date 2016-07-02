@@ -70,6 +70,7 @@ public class Pdemo extends JFrame implements ActionListener{
     JLabel titreChamps;
     JCheckBox choixUtiliseDeuxOndes;
     JSlider choixRatioVolume;
+    JSlider choixDuree;
     
     Container contenu; 
     JPanel panneau_de_composants; 
@@ -123,6 +124,14 @@ public class Pdemo extends JFrame implements ActionListener{
         // Ajouter le JSlider pour choisir le ratio du volume
         choixRatioVolume = new JSlider();
         panneau_de_composants.add(choixRatioVolume);
+
+        // Ajouter un label
+        titreChamps = new JLabel("Choisir la duree :");
+        panneau_de_composants.add(titreChamps);
+        
+        // Ajouter le JSlider pour choisir la duree
+        choixDuree = new JSlider();
+        panneau_de_composants.add(choixDuree);
         
         setVisible(true);
        
