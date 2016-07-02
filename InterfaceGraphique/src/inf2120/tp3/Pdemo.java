@@ -2,16 +2,18 @@ package inf2120.tp3;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class Pdemo extends JFrame implements ActionListener{
     public static final int FREQUENCE_ECHANTILLONAGE = 44100;
@@ -61,28 +63,68 @@ public class Pdemo extends JFrame implements ActionListener{
     double filtreR = 0.1;
     
     JButton btnJouerNote;
+    JMenuBar barreMenuOnde;
+    
     Container contenu; 
+    JPanel panneau_de_composants; 
     
     public Pdemo(){
         setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
         setLayout( new BorderLayout() );
         setSize( Graphic.TAILLE_X + BORDURE_X, 2 * Graphic.TAILLE_Y + BORDURE_Y );
         
-        contenu = getContentPane();       
+        contenu = getContentPane();
         
-        // Dessiner le graphic qui represente l'onde
+        // Ajouter un panneau sur la fenetre
+        panneau_de_composants = new JPanel();
+        panneau_de_composants.setLayout(new FlowLayout());
+        
+        // Dessiner le graphic qui represente l'onde sur la fenetre
         dessin = new Graphic();
         contenu.add( dessin, BorderLayout.CENTER );
 
-        // Ajouter le bouton pour jouer la note sur demande 
+        // Ajouter l'ecouteur sur le bouton qui joue la note 
         btnJouerNote = new JButton("Jouer le son");
         btnJouerNote.addActionListener(this);
-        contenu.add(btnJouerNote, BorderLayout.SOUTH);
+        
+        // Ajouter le bouton au panneau
+        panneau_de_composants.add(btnJouerNote);
+        
+        // Ajouter le panneau sur la fenetre
+        contenu.add(panneau_de_composants, BorderLayout.SOUTH);
+        
+        // Afficher la barre de menu qui permet de choisir notre onde
+        afficherMenu();
         
         setVisible(true);
        
     }
+    
+    private void afficherMenu(){
 
+        barreMenuOnde = new JMenuBar();
+        
+        // Ajouter la barre de menu sur la fenetre
+        setJMenuBar(barreMenuOnde);
+        
+        // Ajouter le menu de choix d'onde sur la barre
+        JMenu menu = new JMenu("Choisir onde");
+        barreMenuOnde.add(menu);
+        
+        // Ajouter les differents choix au menu
+        JMenuItem sinusoidaleMenuItem = new JMenuItem("1- Sinusoidale");
+        sinusoidaleMenuItem.setActionCommand("Sinusoidale");
+        
+        JMenuItem pulseGeneriqueMenuItem = new JMenuItem("2- Pulse Generique");
+        pulseGeneriqueMenuItem.setActionCommand("Pulse Generique");
+
+        sinusoidaleMenuItem.addActionListener(this);
+        pulseGeneriqueMenuItem.addActionListener(this);
+        
+        menu.add(sinusoidaleMenuItem);
+        menu.add(pulseGeneriqueMenuItem);        
+     }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == btnJouerNote){
