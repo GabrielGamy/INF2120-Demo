@@ -3,6 +3,8 @@ package inf2120.tp3;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -67,6 +69,7 @@ public class Pdemo extends JFrame implements ActionListener{
     JTextField saisieOndeRatio;
     JLabel titreChamps;
     JCheckBox choixUtiliseDeuxOndes;
+    JSlider choixRatioVolume;
     
     Container contenu; 
     JPanel panneau_de_composants; 
@@ -80,7 +83,8 @@ public class Pdemo extends JFrame implements ActionListener{
         
         // Ajouter un panneau sur la fenetre
         panneau_de_composants = new JPanel();
-        panneau_de_composants.setLayout(new FlowLayout());
+        // 2 lignes, 3 colonnes , intervalle horizontal de 15, intervalle vertical de 10
+        panneau_de_composants.setLayout(new GridLayout(2, 3, 15, 10)); 
         
         // Dessiner le graphic qui represente l'onde sur la fenetre
         dessin = new Graphic();
@@ -100,7 +104,7 @@ public class Pdemo extends JFrame implements ActionListener{
         afficherMenu();
 
         // Ajouter un label
-        titreChamps = new JLabel("Entrez le ratio");
+        titreChamps = new JLabel("Entrez le ratio :");
         panneau_de_composants.add(titreChamps);
         
         // Ajouter le champs de saisie du ratio
@@ -111,6 +115,14 @@ public class Pdemo extends JFrame implements ActionListener{
         // Ajouter le checkbox qui permet de determiner si l'on utilise des deux ondes
         choixUtiliseDeuxOndes = new JCheckBox("Utilise les deux ondes");
         panneau_de_composants.add(choixUtiliseDeuxOndes);
+ 
+        // Ajouter un label
+        titreChamps = new JLabel("Choisir le volume du ratio :");
+        panneau_de_composants.add(titreChamps);
+        
+        // Ajouter le JSlider pour choisir le ratio du volume
+        choixRatioVolume = new JSlider();
+        panneau_de_composants.add(choixRatioVolume);
         
         setVisible(true);
        
