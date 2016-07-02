@@ -71,6 +71,7 @@ public class Pdemo extends JFrame implements ActionListener{
     JCheckBox choixUtiliseDeuxOndes;
     JSlider choixRatioVolume;
     JSlider choixDuree;
+    JTextField saisieFrequence;
     
     Container contenu; 
     JPanel panneau_de_composants; 
@@ -84,8 +85,8 @@ public class Pdemo extends JFrame implements ActionListener{
         
         // Ajouter un panneau sur la fenetre
         panneau_de_composants = new JPanel();
-        // 2 lignes, 3 colonnes , intervalle horizontal de 15, intervalle vertical de 10
-        panneau_de_composants.setLayout(new GridLayout(2, 3, 15, 10)); 
+        // 3 lignes, 4 colonnes , intervalle horizontal de 15, intervalle vertical de 10
+        panneau_de_composants.setLayout(new GridLayout(3, 4, 15, 10)); 
         
         // Dessiner le graphic qui represente l'onde sur la fenetre
         dessin = new Graphic();
@@ -132,6 +133,15 @@ public class Pdemo extends JFrame implements ActionListener{
         // Ajouter le JSlider pour choisir la duree
         choixDuree = new JSlider();
         panneau_de_composants.add(choixDuree);
+
+        // Ajouter un label
+        titreChamps = new JLabel("Entrez la frequence :");
+        panneau_de_composants.add(titreChamps);
+        
+        // Ajouter le champs de saisie de la frequence
+        saisieFrequence = new JTextField();
+        saisieFrequence.setColumns(2); // taille du champs de texte
+        panneau_de_composants.add(saisieFrequence); 
         
         setVisible(true);
        
