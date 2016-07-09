@@ -91,7 +91,7 @@ public class Pdemo extends JFrame implements ActionListener{
         
         // Ajouter un panneau sur la fenetre
         panneau_de_composants = new JPanel();
-        // 4 lignes, 4 colonnes , intervalle horizontal de 15, intervalle vertical de 10
+        // 5 lignes, 4 colonnes , intervalle horizontal de 15, intervalle vertical de 10
         panneau_de_composants.setLayout(new GridLayout(5, 4, 15, 10)); 
         panneau_de_composants.setBackground(Color.LIGHT_GRAY);
         // Dessiner le graphic qui represente l'onde sur la fenetre
