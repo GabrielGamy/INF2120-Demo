@@ -3,13 +3,9 @@ package inf2120.tp3;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
@@ -47,7 +43,10 @@ public class Pdemo extends JFrame implements ActionListener{
     double duree = 1.0;
 
     // Ondes
-    TypeOnde typeOnde [] = { TypeOnde.SINUSOIDALE, TypeOnde.PULSE_GENERIQUE }; 
+    TypeOnde typeOnde [] = { 
+        TypeOnde.SINUSOIDALE, TypeOnde.TRIANGLE, TypeOnde.TRIANGLE_GENERIQUE, TypeOnde.SCIED, 
+        TypeOnde.SCIEM, TypeOnde.CARRE, TypeOnde.PULSE_GENERIQUE, TypeOnde.BRUIT }; 
+        
     // valeur entre 0 et 1, utilise si nous avons onde PULSE_GENERIQUE ou TRIANGLE_GENERIQUE.
     double ondeRatio [] = { 0.5, 0.7 };
 
@@ -57,13 +56,16 @@ public class Pdemo extends JFrame implements ActionListener{
     double ratioVolume = 0.5;
 
     // Filtre :
-    // filtreS est enmtre 0 et 1.
+    // filtreS est entre 0 et 1.
     // filtreA + filtreD <= duree
     boolean utiliseFiltre = true;
     double filtreA = 0.1;
     double filtreD = 0.3;
     double filtreS = 0.5;
     double filtreR = 0.1;
+    
+    int choixOnde = 0;
+    int choixRatio = 0;
     
     JButton btnJouerNote;
     JMenuBar barreMenuOnde;
@@ -122,7 +124,7 @@ public class Pdemo extends JFrame implements ActionListener{
         panneau_de_composants.add(titreChamps);
         
         // Ajouter le JSlider pour choisir le ratio du volume
-        choixRatioVolume = new JSlider();
+        choixRatioVolume = new JSlider(0 , 1);
         panneau_de_composants.add(choixRatioVolume);
 
         // Ajouter un label
@@ -130,7 +132,7 @@ public class Pdemo extends JFrame implements ActionListener{
         panneau_de_composants.add(titreChamps);
         
         // Ajouter le JSlider pour choisir la duree
-        choixDuree = new JSlider();
+        choixDuree = new JSlider(0, 2);
         panneau_de_composants.add(choixDuree);
 
         // Ajouter un label
@@ -192,61 +194,125 @@ public class Pdemo extends JFrame implements ActionListener{
     private void afficherMenu(){
 
         barreMenuOnde = new JMenuBar();
-        
         // Ajouter la barre de menu sur la fenetre
         setJMenuBar(barreMenuOnde);
-        
         // Ajouter le menu de choix d'onde sur la barre
         JMenu menu = new JMenu("Choisir onde");
         barreMenuOnde.add(menu);
         
-        // Ajouter les differents choix au menu
-        JMenuItem sinusoidaleMenuItem = new JMenuItem("1- Sinusoidale");
-        sinusoidaleMenuItem.setActionCommand("Sinusoidale");
-        
-        JMenuItem pulseGeneriqueMenuItem = new JMenuItem("2- Pulse Generique");
-        pulseGeneriqueMenuItem.setActionCommand("Pulse Generique");
-
-        sinusoidaleMenuItem.addActionListener(this);
-        pulseGeneriqueMenuItem.addActionListener(this);
-        
-        menu.add(sinusoidaleMenuItem);
-        menu.add(pulseGeneriqueMenuItem);        
+        // Ajouter les differents choix au menu             
+        for(int i = 0; i < typeOnde.length; i++){
+            JMenuItem type = new JMenuItem((i + 1) + "- " + typeOnde[i].toString());
+            type.setActionCommand(typeOnde[i].toString()); 
+            type.addActionListener(this);
+            menu.add(type);
+        }
      }
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        JOptionPane panneauErreur = new JOptionPane();
+        
         if(e.getSource() == btnJouerNote){
-            // Obtenir ici les valeurs de tous les champs de la fenetre
-
+            /** Obtenir ici les valeurs de tous les champs de la fenetre*/
+            
+            // Obtenir le ratio
+            try{
+                choixRatio = saisieOndeRatio.isEditable() ? Integer.parseInt(saisieOndeRatio.getText()) : 0;
+                if(choixRatio < 0 || choixRatio > 1) throw new Exception();
+            }catch(Exception ex){
+                panneauErreur.showMessageDialog( this, "Entrez un ratio valide entre 0 et 1", "ratio", JOptionPane.ERROR_MESSAGE);                
+                return;
+            }
             // Recuperer le choix d'utilisation des deux ondes
             utilise2Ondes = choixUtiliseDeuxOndes.isSelected();
+            
+            // Obtenir le ratio de volume
+            ratioVolume = choixRatioVolume.getValue();
+            
+            // Obtenir la duree
+            duree = choixDuree.getValue();
+
+            // Obtenir la frequence
+            try{
+                frequence = Integer.parseInt(saisieFrequence.getText());
+                if(frequence < 20 || frequence > 20000) throw new Exception();
+                
+            }catch(Exception ex){
+                panneauErreur.showMessageDialog( this, "Entrez une frequence valide entre 20 et 20000", "frequence", JOptionPane.ERROR_MESSAGE);                
+                return;
+            }
             
             // Recuperer le choix d'utilisation du filtre
             utiliseFiltre = choixUtiliseFiltre.isSelected();
             
-            /** 
-             * Le reste c'est a vous le completer 
-             */
-            
+            // Obtenir les filtres ADSR
+            try{
+                filtreA = Integer.parseInt(saisieADSR_A.getText());
+                filtreD = Integer.parseInt(saisieADSR_D.getText());
+                filtreS = Integer.parseInt(saisieADSR_S.getText());
+                filtreR = Integer.parseInt(saisieADSR_R.getText());
+                
+                if(filtreS < 0 || filtreS > 1) throw new Exception("Invalide filtre S");
+                if(filtreA + filtreD > duree) throw new Exception("Invalide filtreA et filtreD");
+                
+            }catch(Exception ex){
+                
+                if(ex.getMessage().equals("Invalide filtre S"))
+                    panneauErreur.showMessageDialog( this, "Le filtre S doit est entre O et 1", "ADSR", JOptionPane.ERROR_MESSAGE);                            
+                else if (ex.getMessage().equals("Invalide filtreA et filtreD"))
+                    panneauErreur.showMessageDialog( this, "La sommation du filtre A et D doit etre inferieure ou egale a la duree (filtreA + filtreD <= duree)", "ADSR", JOptionPane.ERROR_MESSAGE);                            
+                else
+                    panneauErreur.showMessageDialog( this, "Entrez des valeurs valides pour les filtres ADSR", "ADSR", JOptionPane.ERROR_MESSAGE);                            
+                
+                return;
+            }
             // les 4 commandes a faire lorsque le boutton est appuye :
-            Onde onde = construireOnde();
+            Onde onde = construireOnde(choixOnde, choixRatio);
             dessin.setFonction( onde );
             dessin.repaint();
             jouerNote( onde ); 
-        }else if(e.getActionCommand().equals("Sinusoidale")){
+        }else if(e.getActionCommand().equals("SINUSOIDALE")){
             // desactiver le champs de saisie du ratio
             saisieOndeRatio.setEditable(false);
-        }else if(e.getActionCommand().equals("Pulse Generique")){
+            choixOnde = 0;
+        }else if(e.getActionCommand().equals("TRIANGLE")){
             // activer le champs de saisie du ratio
             saisieOndeRatio.setEditable(true);
+            choixOnde = 1;
+        }else if(e.getActionCommand().equals("TRIANGLE_GENERIQUE")){
+            // activer le champs de saisie du ratio
+            saisieOndeRatio.setEditable(true);
+            choixOnde = 2;
+            choixRatio = 1;
+        }else if(e.getActionCommand().equals("SCIED")){
+            // activer le champs de saisie du ratio
+            saisieOndeRatio.setEditable(true);
+            choixOnde = 3;
+        }else if(e.getActionCommand().equals("SCIEM")){
+            // activer le champs de saisie du ratio
+            saisieOndeRatio.setEditable(true);
+            choixOnde = 4;
+        }else if(e.getActionCommand().equals("CARRE")){
+            // activer le champs de saisie du ratio
+            saisieOndeRatio.setEditable(true);
+            choixOnde = 5;
+        }else if(e.getActionCommand().equals("PULSE_GENERIQUE")){
+            // activer le champs de saisie du ratio
+            saisieOndeRatio.setEditable(true);
+            choixOnde = 6;
+            choixRatio = 0;
+        }else if(e.getActionCommand().equals("BRUIT")){
+            // activer le champs de saisie du ratio
+            saisieOndeRatio.setEditable(true);
+            choixOnde = 7;
         }
         // rendre visible les changements sur la fenetre
         this.setVisible(true);
     }       
     
     
-    public Onde construireOndeBase( int i ) {
+    public Onde construireOndeBase( int i, int ratio ) {
             Onde resultat = null;
             switch( typeOnde[i] ) {
             case SINUSOIDALE :
@@ -268,21 +334,21 @@ public class Pdemo extends JFrame implements ActionListener{
                     resultat = new Bruit();
                     break;
             case PULSE_GENERIQUE:
-                    resultat = new PulseGenerique( FREQUENCE_ECHANTILLONAGE, frequence, ondeRatio[i] );
+                    resultat = new PulseGenerique( FREQUENCE_ECHANTILLONAGE, frequence, ondeRatio[ratio] );
                     break;
             case TRIANGLE_GENERIQUE:
-                    resultat = new TriangleGenerique( FREQUENCE_ECHANTILLONAGE, frequence, ondeRatio[i] );
+                    resultat = new TriangleGenerique( FREQUENCE_ECHANTILLONAGE, frequence, ondeRatio[ratio] );
                     break;
             }
             resultat.setDure( duree );
             return resultat;
     }
 
-    public Onde construireOnde() {
-            Onde resultat = construireOndeBase( 0 );
+    public Onde construireOnde(int choixOnde, int choixRatio) {
+            Onde resultat = construireOndeBase(choixOnde,choixRatio);
 
             if( utilise2Ondes ){
-                    resultat = new Mixe( resultat, ratioVolume, construireOndeBase( 1 ), 1.0 - ratioVolume ); 
+                    resultat = new Mixe( resultat, ratioVolume, construireOndeBase( 1, 1 ), 1.0 - ratioVolume ); 
                     resultat.setDure( duree );
             }
 
